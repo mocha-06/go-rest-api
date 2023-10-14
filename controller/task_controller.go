@@ -60,7 +60,7 @@ func (tc *taskController) CreateTask(c echo.Context) error {
 	if err := c.Bind(&task); err != nil {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
-	task.UserID = uint(userId.(float64))
+	task.UserId = uint(userId.(float64))
 	taskRes ,err := tc.tu.CreateTask(task)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, err.Error())
