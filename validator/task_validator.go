@@ -6,13 +6,13 @@ import (
 	validation "github.com/go-ozzo/ozzo-validation/v4"
 )
 
-type ITaskVakudator interface {
+type ITaskValidator interface {
 	TaskValidate(task model.Task) error
 }
 
 type taskValidator struct{}
 
-func NewTaskValidator() ITaskVakudator {
+func NewTaskValidator() ITaskValidator {
 	return &taskValidator{}
 }
 
