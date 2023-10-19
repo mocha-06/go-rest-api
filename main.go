@@ -10,11 +10,16 @@ import (
 )
 
 func main() {
+	// 返却されたインスタンスを通じてDBの操作を行う
 	db := db.NewDB()
+	// userValidatorにuserValidatorのインスタンスを代入
 	userValidator := validator.NewUserValidator()
+	// taskValidatorにtaskValidatorのインスタンスを代入
 	taskValidator := validator.NewTaskValidator()
+	// それぞれRepositoryにrepositoryインスタンスを
 	userRepository := repository.NewUserRepository(db)
 	taskRepository := repository.NewTaskRepository(db)
+	// それぞれのinstanceを作成(repositoryはDBアクセスを含める)
 	userUsecase := usecase.NewUserUsecase(userRepository, userValidator)
 	taskUsecase := usecase.NewTaskUsecase(taskRepository, taskValidator)
 	userController := controller.NewUserController(userUsecase)

@@ -12,7 +12,10 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
+// interface 2つのmethod
 type IUserUsecase interface {
+	// 関数名(引数) (return値の型)
+	// model.UserResponse {ID, Email}
 	SignUp(user model.User) (model.UserResponse, error)
 	Login(user model.User) (string, error)
 }
@@ -22,20 +25,26 @@ type userUsecase struct {
 	uv validator.IUserValidator
 }
 
+// repositoryからDB操作のrepository、validatorからvalidatorを渡される
+// 上記instanceを持ったIUserUsecase interfaceを実装
 func NewUserUsecase(ur repository.IUserRepository, uv validator.IUserValidator) IUserUsecase {
 	return &userUsecase{ur, uv}
 }
 
+// model.UserResponse {ID, Email}
+// userUsecaseにmethodを実装
 func (uu *userUsecase) SignUp(user model.User) (model.UserResponse, error) {
 	if err := uu.uv.UserValidate(user); err != nil {
 		return model.UserResponse{}, err
 	}
+	// GenerateFromPassword() => hash値([]byte)とerrorを返す
 	hash, err := bcrypt.GenerateFromPassword([]byte(user.Password), 10)
 	if err != nil {
 		return model.UserResponse{}, err
 	}
+	// newUserはEmailとhash化されたpasswordを持つ
 	newUser := model.User{Email: user.Email, Password: string(hash)}
-	if err :=uu.ur.CreateUser(&newUser); err != nil {
+	if err := uu.ur.CreateUser(&newUser); err != nil {
 		return model.UserResponse{}, err
 	}
 	resUser := model.UserResponse{
@@ -45,6 +54,7 @@ func (uu *userUsecase) SignUp(user model.User) (model.UserResponse, error) {
 	return resUser, nil
 }
 
+// userUsecaseにmethodを実装
 func (uu *userUsecase) Login(user model.User) (string, error) {
 	if err := uu.uv.UserValidate(user); err != nil {
 		return "", err
