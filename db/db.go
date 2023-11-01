@@ -19,7 +19,7 @@ func NewDB() *gorm.DB {
 			log.Fatalln(err)
 		}
 	}
-	// .envからurlを構築　PosgerSQLに接続するためのURL
+	// .envからurlを構築 PosgerSQLに接続するためのURL
 	url := fmt.Sprintf("postgres://%s:%s@%s:%s/%s", os.Getenv("POSTGRES_USER"),
 		os.Getenv("POSTGRES_PW"), os.Getenv("POSTGRES_HOST"),
 		os.Getenv("POSTGRES_PORT"), os.Getenv("POSTGRES_DB"))
