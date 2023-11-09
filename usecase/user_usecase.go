@@ -68,10 +68,13 @@ func (uu *userUsecase) Login(user model.User) (string, error) {
 	if err != nil {
 		return "", err
 	}
+	// JWTのトークンオブジェクト 署名を含むトークンを生成
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"user_id": storedUser.ID,
 		"exp":     time.Now().Add(time.Hour * 12).Unix(),
 	})
+	// SignedString() JWTトークンを署名して文字列に変換するメソッド
+	// os.Getenv("SECRET") 環境変数から秘密鍵を取得するためのコード
 	tokenString, err := token.SignedString([]byte(os.Getenv("SECRET")))
 	if err != nil {
 		return "", err
