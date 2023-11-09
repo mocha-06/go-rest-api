@@ -55,6 +55,7 @@ func (uu *userUsecase) SignUp(user model.User) (model.UserResponse, error) {
 }
 
 // userUsecaseにmethodを実装
+// エラーが発生しなければstringにはtokenが
 func (uu *userUsecase) Login(user model.User) (string, error) {
 	if err := uu.uv.UserValidate(user); err != nil {
 		return "", err
@@ -75,5 +76,7 @@ func (uu *userUsecase) Login(user model.User) (string, error) {
 	if err != nil {
 		return "", err
 	}
+	// 上記functionでエラーがなかった場合
+	// token文字列、errorにnilが返される
 	return tokenString, nil
 }
