@@ -24,6 +24,10 @@ func main() {
 	taskUsecase := usecase.NewTaskUsecase(taskRepository, taskValidator)
 	userController := controller.NewUserController(userUsecase)
 	taskController := controller.NewTaskController(taskUsecase)
+	// 引数に対し、requestのハンドリングとルーティングの担当するinstanceを作成
 	e := router.NewRouter(userController, taskController)
+	// Echoウェブアプリケーションを指定のポートで起動
+	// HTTPリクエストを受け付けるHTTPサーバーが開始 e.Start(":8080")
+	// Echoアプリケーションのロガーを使用してログメッセージを記録、アプリケーションの停止
 	e.Logger.Fatal(e.Start(":8080"))
 }
